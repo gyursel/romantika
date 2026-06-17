@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Инвентар</title>
+<style>
+  :root {
+    --bg: #0A0A0C;
+    --surface: #111114;
+    --surface2: #18181C;
+    --border: #222226;
+    --gold: #C8912A;
+    --gold2: #E8C060;
+    --text: #E8E4DC;
+    --muted: #666;
+    --success: #4CAF72;
+    --warning: #E8A030;
+    --danger: #E84040;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+  /* API KEY SCREEN */
+  #key-screen {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .key-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 24px; width: 100%; max-width: 420px;
+  }
+  .key-logo { font-size: 32px; margin-bottom: 16px; }
+  .key-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .key-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+  .key-link { color: var(--gold); text-decoration: none; }
+  .key-input {
+    width: 100%; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px; color: var(--text);
+    font-size: 14px; outline: none; margin-bottom: 12px;
+  }
+  .key-input:focus { border-color: var(--gold); }
+  .key-btn {
+    width: 100%; padding: 13px; border-radius: 10px; border: none;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: #0A0A0C; font-size: 14px; font-weight: 700;
+    cursor: pointer; letter-spacing: 0.02em;
+  }
+  .key-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 12px; }
+
+  /* MAIN APP */
+  #app { display: none; flex-direction: column; min-height: 100vh; }
+
+  /* HEADER */
+  .header {
+    padding: 16px 20px 0; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; background: var(--bg); z-index: 10;
+  }
+  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    display: flex; align-items: center; justify-content: center; font-size: 17px;
+  }
+  .logo-text { font-size: 15px; font-weight: 700; }
+  .logo-sub { font-size: 10px; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+  .reset-key { background: none; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: 11px; padding: 5px 10px; cursor: pointer; }
+  .tabs { display: flex; gap: 2px; }
+  .tab {
+    padding: 9px 20px; border: none; background: transparent; cursor: pointer;
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    border-bottom: 2px solid transparent; transition: all 0.15s;
+    letter-spacing: 0.02em;
+  }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* CONTENT */
+  .content { flex: 1; padding: 20px; max-width: 540px; margin: 0 auto; width: 100%; }
+
+  /* UPLOAD */
+  .upload-zone {
+    border: 1.5px dashed var(--border); border-radius: 16px;
+    padding: 36px 20px; text-align: center; cursor: pointer;
+    background: var(--surface); margin-bottom: 14px; transition: border-color 0.2s;
+  }
+  .upload-zone:hover { border-color: #444; }
+  .upload-zone.has-img { padding: 0; border-style: solid; border-color: var(--gold); overflow: hidden; }
+  .upload-zone img { width: 100%; display: block; border-radius: 14px; max-height: 240px; object-fit: cover; }
+  .upload-icon { font-size: 34px; margin-bottom: 10px; }
+  .upload-title { font-size: 14px; font-weight: 600; margin-bottom: 5px; }
+  .upload-sub { font-size: 12px; color: var(--muted); }
+
+  /* BUTTONS */
+  .action-row { display: flex; gap: 10px; margin-bottom: 20px; }
+  .btn-cam {
+    flex: 1; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); font-size: 13px;
+    font-weight: 600; cursor: pointer;
+  }
+  .btn-analyze {
+    flex: 2; padding: 12px; border-radius: 12px; border: none;
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: #0A0A0C; font-size: 13px; font-weight: 700; cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-analyze:disabled {
+    background: var(--surface2); color: #444; cursor: default;
+  }
+
+  /* RESULTS */
+  .summary-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px; margin-bottom: 16px;
+  }
+  .summary-text { font-size: 13px; color: #AAA; margin-bottom: 14px; line-height: 1.5; }
+  .stats { display: flex; gap: 20px; }
+  .stat-num { font-size: 24px; font-weight: 700; }
+  .stat-lbl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  .section-title {
+    font-size: 11px; color: var(--muted); text-transform: uppercase;
+    letter-spacing: 0.05em; font-weight: 600; margin: 14px 0 8px;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .cat-dot { width: 8px; height: 8px; border-radius: 2px; display: inline-block; }
+
+  .item-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 11px 14px; margin-bottom: 5px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .item-card.urgent { background: #1A0808; border-color: #4A1010; }
+  .item-name { font-size: 13px; font-weight: 600; }
+  .item-cat { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .item-qty { font-size: 22px; font-weight: 700; text-align: right; line-height: 1; }
+  .item-unit { font-size: 10px; color: var(--muted); text-align: right; }
+
+  .badge {
+    font-size: 10px; padding: 2px 8px; border-radius: 4px;
+    font-weight: 600; display: inline-block; margin-top: 3px;
+  }
+  .badge-ok { background: #0A2A14; color: var(--success); }
+  .badge-low { background: #2A1A00; color: var(--warning); }
+  .badge-empty { background: #2A0808; color: var(--danger); }
+  .badge-high { background: #0A2A14; color: var(--success); }
+  .badge-medium { background: #2A1A00; color: var(--warning); }
+  .badge-bad { background: #2A0808; color: var(--danger); }
+
+  .priority-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .loading { text-align: center; padding: 40px 0; color: var(--muted); }
+  .loading-spin { font-size: 30px; display: inline-block; animation: spin 1.2s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .error-box {
+    background: #1A0808; border: 1px solid #4A1010; border-radius: 10px;
+    padding: 13px 15px; font-size: 13px; color: #E87070; margin-bottom: 14px;
+  }
+
+  /* Export */
+  .export-btn {
+    width: 100%; padding: 12px; border-radius: 12px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); font-size: 13px;
+    font-weight: 600; cursor: pointer; margin-top: 16px;
+  }
+  .export-btn:hover { color: var(--text); border-color: #444; }
+</style>
+</head>
+<body>
+
+<!-- API KEY SCREEN -->
+<div id="key-screen">
+  <div class="key-card">
+    <div class="key-logo">📦</div>
+    <div class="key-title">Инвентар за ресторант</div>
+    <div class="key-sub">
+      Снимай склада или бара — AI разпознава продуктите автоматично.<br><br>
+      Нужен е безплатен Gemini API key от
+      <a class="key-link" href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+    </div>
+    <input class="key-input" type="password" id="api-key-input" placeholder="Въведи Anthropic API key...">
+    <button class="key-btn" onclick="saveKey()">Влез →</button>
+    <div class="key-note">🔒 Key-ът се пази само в браузъра ти</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="header">
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-icon">📦</div>
+        <div>
+          <div class="logo-text">Инвентар</div>
+          <div class="logo-sub">AI · Ресторант</div>
+        </div>
+      </div>
+      <button class="reset-key" onclick="resetKey()">Смени key</button>
+    </div>
+    <div class="tabs">
+      <button class="tab active" id="tab-wh" onclick="setMode('warehouse')">🏭 Склад</button>
+      <button class="tab" id="tab-bar" onclick="setMode('bar')">🍸 Бар</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-inp').click()">
+      <div id="drop-inner">
+        <div class="upload-icon">📸</div>
+        <div class="upload-title" id="up-title">Снимай склада</div>
+        <div class="upload-sub">Натисни за снимка от галерията</div>
+      </div>
+    </div>
+
+    <input type="file" id="file-inp" accept="image/*" style="display:none" onchange="handleFile(this)">
+    <input type="file" id="cam-inp" accept="image/*" capture="environment" style="display:none" onchange="handleFile(this)">
+
+    <div class="action-row">
+      <button class="btn-cam" onclick="document.getElementById('cam-inp').click()">📷 Камера</button>
+      <button class="btn-analyze" id="btn-go" onclick="analyze()" disabled>🔍 Анализирай</button>
+    </div>
+
+    <div id="results"></div>
+  </div>
+</div>
+
+<script>
+let mode = 'warehouse';
+let imgB64 = null;
+let imgMime = 'image/jpeg';
+
+// KEY MANAGEMENT
+function saveKey() {
+  const k = document.getElementById('api-key-input').value.trim();
+  if (!k) return alert('Въведи API key!');
+  localStorage.setItem('claude_key', k);
+  showApp();
+}
+
+function resetKey() {
+  localStorage.removeItem('claude_key');
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('key-screen').style.display = 'flex';
+  document.getElementById('api-key-input').value = '';
+}
+
+function showApp() {
+  document.getElementById('key-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+}
+
+window.onload = () => {
+  if (localStorage.getItem('claude_key')) showApp();
+};
+
+// MODE
+function setMode(m) {
+  mode = m;
+  document.getElementById('tab-wh').className = 'tab' + (m === 'warehouse' ? ' active' : '');
+  document.getElementById('tab-bar').className = 'tab' + (m === 'bar' ? ' active' : '');
+  document.getElementById('up-title').textContent = m === 'warehouse' ? 'Снимай склада' : 'Снимай бара';
+  document.getElementById('results').innerHTML = '';
+  resetUpload();
+}
+
+function resetUpload() {
+  imgB64 = null;
+  const dz = document.getElementById('drop-zone');
+  dz.className = 'upload-zone';
+  dz.innerHTML = `<div id="drop-inner"><div class="upload-icon">📸</div><div class="upload-title" id="up-title">${mode === 'warehouse' ? 'Снимай склада' : 'Снимай бара'}</div><div class="upload-sub">Натисни за снимка от галерията</div></div>`;
+  setBtn(false);
+}
+
+function setBtn(on) {
+  const b = document.getElementById('btn-go');
+  b.disabled = !on;
+}
+
+// FILE
+function handleFile(inp) {
+  const f = inp.files[0];
+  if (!f) return;
+  imgMime = f.type || 'image/jpeg';
+  const url = URL.createObjectURL(f);
+  const dz = document.getElementById('drop-zone');
+  dz.className = 'upload-zone has-img';
+  dz.innerHTML = `<img src="${url}" alt="снимка">`;
+  const r = new FileReader();
+  r.onload = e => { imgB64 = e.target.result.split(',')[1]; setBtn(true); };
+  r.readAsDataURL(f);
+}
+
+// ANALYZE
+async function analyze() {
+  if (!imgB64) return;
+  const key = localStorage.getItem('claude_key');
+  if (!key) { resetKey(); return; }
+
+  document.getElementById('results').innerHTML = `<div class="loading"><div class="loading-spin">⚙️</div><br><br>AI анализира снимката...</div>`;
+
+  const promptWH = `Анализирай тази снимка от ресторантски склад или хладилна витрина. Идентифицирай всички видими продукти (бутилки, кутии, консерви и т.н.) и брой количествата им. Върни САМО валиден JSON без markdown:
+{"items":[{"name":"Пълното търговско наименование","category":"категория на български","quantity":число,"unit":"бр","confidence":"high|medium|low"}],"summary":"Кратко описание на снимката на български"}
+Категории: уиски, водка, ром, джин, ракия, вино, бира, безалкохолни, сокове, вода, храна, друго
+confidence: high=ясно видимо и преброимо, medium=частично видимо, low=приблизително`;
+
+  const promptBAR = `Анализирай тази снимка от бар витрина или бар плот. Идентифицирай всички видими бутилки и напитки. Определи кое трябва да се зареди. Върни САМО валиден JSON без markdown:
+{"visible":[{"name":"Пълното търговско наименование","category":"категория на български","current":число,"status":"ok|low|empty"}],"restock":[{"name":"наименование","needed":число,"priority":"high|medium|low"}],"summary":"Кратко описание на бара на български"}
+status: ok=2+ бутилки, low=1 бутилка, empty=0
+priority: high=изчерпано/последна бутилка, medium=1 останала, low=има но малко`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1500,
+        system: mode === 'warehouse' ? promptWH : promptBAR,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: imgMime, data: imgB64 } },
+            { type: 'text', text: mode === 'warehouse' ? 'Анализирай склада.' : 'Анализирай бара.' }
+          ]
+        }]
+      })
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      document.getElementById('results').innerHTML = `<div class="error-box">❌ Грешка: ${data.error.message}<br><br>Провери дали API key-ът е правилен.</div>`;
+      return;
+    }
+
+    const txt = data.content?.[0]?.text || '';
+    const clean = txt.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    render(parsed);
+
+  } catch(e) {
+    document.getElementById('results').innerHTML = `<div class="error-box">❌ Грешка при анализа. Провери интернет връзката и API key-а.</div>`;
+    console.error(e);
+  }
+}
+
+// COLORS
+const catColors = {
+  'уиски':'#C8912A','водка':'#6EC6F0','ром':'#D4845A','джин':'#7EC8A0',
+  'ракия':'#E8A870','вино':'#C87090','бира':'#E8C840','безалкохолни':'#70C8E8',
+  'сокове':'#E8A040','вода':'#90D0F0','храна':'#A0C870','друго':'#A0A0B0'
+};
+
+// RENDER
+function render(r) {
+  let h = '';
+
+  if (mode === 'warehouse') {
+    const tot = (r.items||[]).reduce((s,i) => s + (i.quantity||0), 0);
+    const conf = (r.items||[]).filter(i => i.confidence === 'high').length;
+
+    h += `<div class="summary-box">
+      <div class="summary-text">${r.summary||''}</div>
+      <div class="stats">
+        <div><div class="stat-num" style="color:var(--gold)">${(r.items||[]).length}</div><div class="stat-lbl">Артикула</div></div>
+        <div><div class="stat-num" style="color:var(--gold2)">${tot}</div><div class="stat-lbl">Общо бр</div></div>
+        <div><div class="stat-num" style="color:var(--success)">${conf}</div><div class="stat-lbl">Сигурни</div></div>
+      </div>
+    </div>`;
+
+    // Group by category
+    const byCat = {};
+    (r.items||[]).forEach(i => {
+      const c = (i.category||'друго').toLowerCase();
+      if (!byCat[c]) byCat[c] = [];
+      byCat[c].push(i);
+    });
+
+    Object.entries(byCat).forEach(([cat, items]) => {
+      const col = catColors[cat] || '#888';
+      h += `<div class="section-title"><span class="cat-dot" style="background:${col}"></span>${cat}</div>`;
+      items.forEach(item => {
+        const bc = item.confidence==='high' ? 'badge-high' : item.confidence==='medium' ? 'badge-medium' : 'badge-bad';
+        const bl = item.confidence==='high' ? 'сигурно' : item.confidence==='medium' ? 'вероятно' : 'приблизително';
+        h += `<div class="item-card">
+          <div style="flex:1">
+            <div class="item-name">${item.name}</div>
+            <span class="badge ${bc}">${bl}</span>
+          </div>
+          <div>
+            <div class="item-qty" style="color:${col}">${item.quantity}</div>
+            <div class="item-unit">${item.unit||'бр'}</div>
+          </div>
+        </div>`;
+      });
+    });
+
+    // Export
+    h += `<button class="export-btn" onclick="exportList(${JSON.stringify(r).replace(/"/g,'&quot;')})">📋 Копирай списъка</button>`;
+
+  } else {
+    // BAR MODE
+    const urg = (r.restock||[]).filter(i => i.priority==='high').length;
+
+    h += `<div class="summary-box">
+      <div class="summary-text">${r.summary||''}</div>
+      <div class="stats">
+        <div><div class="stat-num" style="color:var(--danger)">${urg}</div><div class="stat-lbl">Спешно</div></div>
+        <div><div class="stat-num" style="color:var(--warning)">${(r.restock||[]).length}</div><div class="stat-lbl">За зареждане</div></div>
+        <div><div class="stat-num" style="color:var(--success)">${(r.visible||[]).filter(v=>v.status==='ok').length}</div><div class="stat-lbl">Добре</div></div>
+      </div>
+    </div>`;
+
+    if ((r.restock||[]).length > 0) {
+      h += `<div class="section-title">⚠️ Трябва да се зареди</div>`;
+      (r.restock||[]).forEach(item => {
+        const dc = item.priority==='high' ? 'var(--danger)' : item.priority==='medium' ? 'var(--warning)' : 'var(--success)';
+        h += `<div class="item-card${item.priority==='high' ? ' urgent' : ''}">
+          <div class="priority-dot" style="background:${dc}"></div>
+          <div style="flex:1"><div class="item-name">${item.name}</div></div>
+          <div style="font-size:13px;color:#888">+${item.needed} бр</div>
+        </div>`;
+      });
+    }
+
+    h += `<div class="section-title" style="margin-top:16px">Всички видими</div>`;
+    (r.visible||[]).forEach(item => {
+      const sc = item.status==='ok' ? 'badge-ok' : item.status==='low' ? 'badge-low' : 'badge-empty';
+      const sl = item.status==='ok' ? 'ОК' : item.status==='low' ? 'МАЛКО' : 'ИЗЧЕРПАНО';
+      h += `<div class="item-card">
+        <div style="flex:1">
+          <div class="item-name">${item.name}</div>
+          <div class="item-cat">${item.category||''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:13px;color:#888">${item.current} бр</span>
+          <span class="badge ${sc}">${sl}</span>
+        </div>
+      </div>`;
+    });
+
+    h += `<button class="export-btn" onclick="exportRestock(${JSON.stringify(r).replace(/"/g,'&quot;')})">📋 Копирай списъка за зареждане</button>`;
+  }
+
+  document.getElementById('results').innerHTML = h;
+}
+
+function exportList(r) {
+  let txt = `ИНВЕНТАР — ${new Date().toLocaleDateString('bg-BG')}\n`;
+  txt += `${r.summary}\n\n`;
+  (r.items||[]).forEach(i => { txt += `${i.name}: ${i.quantity} ${i.unit||'бр'}\n`; });
+  navigator.clipboard.writeText(txt).then(() => alert('Копирано! ✓'));
+}
+
+function exportRestock(r) {
+  let txt = `ЗА ЗАРЕЖДАНЕ — ${new Date().toLocaleDateString('bg-BG')}\n\n`;
+  (r.restock||[]).forEach(i => { txt += `[ ] ${i.name} — +${i.needed} бр\n`; });
+  navigator.clipboard.writeText(txt).then(() => alert('Копирано! ✓'));
+}
+</script>
+</body>
+</html>
