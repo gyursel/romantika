@@ -7,7 +7,7 @@ const CLOUD_NAME = 'dqunocngf';
 const UPLOAD_PRESET = 'menu_upload';
 
 const defaultMenu = {
-  restaurantName: 'Ресторант Романтика',
+  restaurantName: 'Романтика',
   phone: '+359 88 888 8888',
   footerNote: 'Всички ястия се приготвят в момента на поръчката.\nАлергени при поискване.',
   heroImage: '',
@@ -273,10 +273,10 @@ export default function Home() {
               ? `linear-gradient(rgba(26,18,8,${dark?'0.7':'0.55'}), rgba(26,18,8,${dark?'0.85':'0.72'})), url(${menu.heroImage}) center/cover no-repeat`
               : dark ? '#171108' : '#1A1208',
             color: '#D4AF37',
-            padding: '2.5rem 1.25rem 2rem',
+            padding: '2.75rem 1.25rem 2.5rem',
             textAlign: 'center',
             position: 'relative',
-            minHeight: menu.heroImage ? 170 : 'auto',
+            minHeight: menu.heroImage ? 210 : 'auto',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             opacity: headerVisible ? 1 : 0,
             transform: headerVisible ? 'translateY(0)' : 'translateY(-10px)',
@@ -291,9 +291,10 @@ export default function Home() {
               style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(245,230,163,0.1)', border: '0.5px solid rgba(245,230,163,0.3)', color: 'rgba(245,230,163,0.7)', fontSize: 15, width: 30, height: 30, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               {dark ? '☀️' : '🌙'}
             </button>
-            <div style={{ fontSize: 20, fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{menu.restaurantName}</div>
-            <div style={{ fontSize: 12, color: '#D4AF37', marginTop: 4, letterSpacing: '0.05em' }}>{formatDate()}</div>
-            <div style={{ width: 40, height: 1, background: '#B8860B', margin: '12px auto 0' }} />
+            <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#D4AF37', marginBottom: 8 }}>Добре дошли в</div>
+            <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#F5E6A3', lineHeight: 1.15 }}>{menu.restaurantName}</div>
+            <div style={{ fontSize: 15, color: '#D4AF37', margin: '12px 0' }}>♡</div>
+            <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#D4AF37' }}>Обедно меню</div>
           </div>
 
           {/* Sections */}
