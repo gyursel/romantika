@@ -344,7 +344,7 @@ export default function Home() {
 
           {/* Phone bar */}
           {menu.phone && (
-            <div style={{ background: '#B8860B', color: '#1A1208', textAlign: 'center', padding: '7px 1rem', fontSize: 13, fontWeight: 600, letterSpacing: '0.03em', animation: 'fadeDown 0.4s ease' }}>
+            <div style={{ background: '#B8860B', color: '#1A1208', textAlign: 'center', padding: '7px 1rem', fontSize: 20, fontWeight: 600, letterSpacing: '0.03em', animation: 'fadeDown 0.4s ease' }}>
               📞 <a href={`tel:${menu.phone.replace(/\s/g,'')}`} style={{ color: '#1A1208', textDecoration: 'none' }}>{menu.phone}</a>
             </div>
           )}
