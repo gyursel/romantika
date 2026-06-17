@@ -13,7 +13,7 @@ const defaultMenu = {
   heroImage: '',
   sections: [
     {
-      label: 'Супа',
+      label: 'Супата',
       dishes: [
         { name: 'Телешки бульон с фиде', desc: 'Домашен бульон, зеленчуци, магданоз', price: '4.50', weight: '300 мл', badges: [], image: '' },
         { name: 'Крем супа от тиква', desc: 'Орехи, сметана, черен пипер', price: '5.00', weight: '300 мл', badges: ['veg'], image: '' }
