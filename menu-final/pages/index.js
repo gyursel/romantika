@@ -162,7 +162,7 @@ export default function Home() {
     setAdminMenu(m);
   }
 
-  const bg = dark ? '#1b150d' : '#FDFAF5';
+  const bg = dark ? '#1b150d' : '#(';
   const cardBg = dark ? '#2b2419' : 'white';
   const textMain = dark ? '#F5E6A3' : '#1A1208';
   const textSub = dark ? '#a08c5e' : '#6B5E3E';
@@ -194,7 +194,7 @@ export default function Home() {
         @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
         .section-label { animation: fadeUp 0.5s ease both; }
         .romantika-hero {
-          min-height: 122px;
+          min-height: 92px;
           padding: 20px 56px 16px;
           overflow: hidden;
           isolation: isolate;
