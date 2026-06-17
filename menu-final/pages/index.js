@@ -297,7 +297,7 @@ export default function Home() {
         .hero-kicker { font-size: 13px; margin-bottom: 2px; }
         .hero-title {
           font-family: Georgia, 'Times New Roman', serif;
-          font-size: clamp(27px, 7vw, 40px);
+          font-size: clamp(26px, 7vw, 38px);
           line-height: .98;
           font-weight: 500;
           text-transform: uppercase;
@@ -333,7 +333,7 @@ export default function Home() {
         @media (max-width: 520px) {
           .romantika-hero { min-height: 132px; padding: 18px 44px 14px; }
           .hero-kicker { font-size: 12px; }
-          .hero-title { font-size: clamp(26px, 8vw, 36px); }
+          .hero-title { font-size: clamp(24px, 8vw, 32px); }
           .hero-subtitle { font-size: 10px; }
         }
       `}</style>
