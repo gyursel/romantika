@@ -124,7 +124,7 @@ function DishCard({ d, dark, badgeColors, index }) {
             </div>
           )}
         </div>
-        <div style={{ fontSize: 30, fontWeight: 500, color: dark ? '#d4a830' : '#7A5C00', whiteSpace: 'nowrap' }}>{d.price} €</div>
+        <div style={{ fontSize: 22, fontWeight: 500, color: dark ? '#d4a830' : '#7A5C00', whiteSpace: 'nowrap' }}>{d.price} €</div>
       </div>
     </div>
   );
