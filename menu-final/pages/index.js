@@ -254,6 +254,88 @@ export default function Home() {
         @keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
         @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
         .section-label { animation: fadeUp 0.5s ease both; }
+        .romantika-hero {
+          min-height: 132px;
+          padding: 20px 56px 16px;
+          overflow: hidden;
+          isolation: isolate;
+        }
+        .romantika-hero::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(90deg, rgba(8,5,2,.72) 0%, rgba(10,7,3,.36) 36%, rgba(8,5,2,.28) 60%, rgba(8,5,2,.70) 100%),
+            linear-gradient(180deg, rgba(6,4,2,.34) 0%, rgba(6,4,2,.13) 45%, rgba(6,4,2,.58) 100%);
+          z-index: -1;
+          pointer-events: none;
+        }
+        .romantika-hero::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          box-shadow: inset 0 0 42px rgba(0,0,0,.58);
+          z-index: 0;
+          pointer-events: none;
+        }
+        .hero-copy {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          text-shadow: 0 2px 10px rgba(0,0,0,.78);
+        }
+        .hero-kicker, .hero-subtitle {
+          font-family: Georgia, 'Times New Roman', serif;
+          color: #fff9e8;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: .20em;
+        }
+        .hero-kicker { font-size: 13px; margin-bottom: 2px; }
+        .hero-title {
+          font-family: Georgia, 'Times New Roman', serif;
+          font-size: clamp(34px, 9vw, 52px);
+          line-height: .98;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: .035em;
+          color: #e9c86f;
+          text-shadow: 0 2px 0 #5f3d00, 0 4px 12px rgba(0,0,0,.92);
+          margin: 1px 0 7px;
+        }
+        .hero-ornament {
+          width: min(200px, 58vw);
+          height: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 7px;
+          margin-bottom: 3px;
+        }
+        .hero-ornament::before, .hero-ornament::after {
+          content: '';
+          flex: 1;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, #d7ad42 28%, #f0d77f 100%);
+          box-shadow: 0 1px 0 rgba(64,40,0,.8);
+        }
+        .hero-ornament::after { transform: scaleX(-1); }
+        .hero-heart {
+          color: #e5bd55;
+          font-size: 20px;
+          line-height: 1;
+          filter: drop-shadow(0 2px 2px rgba(0,0,0,.85));
+        }
+        .hero-subtitle { font-size: 11px; }
+        @media (max-width: 520px) {
+          .romantika-hero { min-height: 132px; padding: 18px 44px 14px; }
+          .hero-kicker { font-size: 12px; }
+          .hero-title { font-size: clamp(33px, 10vw, 44px); }
+          .hero-subtitle { font-size: 10px; }
+        }
       `}</style>
 
       {/* ── MENU ── */}
@@ -268,33 +350,41 @@ export default function Home() {
           )}
 
           {/* Header */}
-          <div style={{
-            background: menu.heroImage
-              ? `linear-gradient(rgba(26,18,8,${dark?'0.7':'0.55'}), rgba(26,18,8,${dark?'0.85':'0.72'})), url(${menu.heroImage}) center/cover no-repeat`
-              : dark ? '#171108' : '#1A1208',
-            color: '#D4AF37',
-            padding: '2.75rem 1.25rem 2.5rem',
-            textAlign: 'center',
-            position: 'relative',
-            minHeight: menu.heroImage ? 210 : 'auto',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-            opacity: headerVisible ? 1 : 0,
-            transform: headerVisible ? 'translateY(0)' : 'translateY(-10px)',
-            transition: 'opacity 0.5s ease, transform 0.5s ease',
-          }}>
+          <div
+            className="romantika-hero"
+            style={{
+              background: menu.heroImage
+                ? `url(${menu.heroImage}) center/cover no-repeat`
+                : 'linear-gradient(135deg, #20160a 0%, #0d0905 100%)',
+              color: '#D4AF37',
+              textAlign: 'center',
+              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: headerVisible ? 1 : 0,
+              transform: headerVisible ? 'translateY(0)' : 'translateY(-10px)',
+              transition: 'opacity 0.5s ease, transform 0.5s ease',
+            }}
+          >
             <button onClick={() => { setPassword(''); setLoginError(false); setScreen('login'); }}
-              style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'rgba(245,230,163,0.1)', border: '0.5px solid rgba(245,230,163,0.3)', color: 'rgba(245,230,163,0.7)', fontSize: 11, padding: '4px 8px', borderRadius: 4, cursor: 'pointer' }}>
-              ⚙ Админ
+              style={{ position: 'absolute', zIndex: 2, top: 10, right: 10, background: 'rgba(14,9,4,0.46)', border: '1px solid rgba(234,201,111,0.42)', color: '#f2d98c', fontSize: 10, padding: '4px 7px', borderRadius: 4, cursor: 'pointer', backdropFilter: 'blur(4px)' }}>
+              ⚙
             </button>
-            {/* Dark mode toggle */}
             <button onClick={toggleDark}
-              style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(245,230,163,0.1)', border: '0.5px solid rgba(245,230,163,0.3)', color: 'rgba(245,230,163,0.7)', fontSize: 15, width: 30, height: 30, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              style={{ position: 'absolute', zIndex: 2, top: 10, left: 10, background: 'rgba(14,9,4,0.46)', border: '1px solid rgba(234,201,111,0.42)', color: '#f2d98c', fontSize: 13, width: 27, height: 27, borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)' }}>
               {dark ? '☀️' : '🌙'}
             </button>
-            <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#D4AF37', marginBottom: 8 }}>Добре дошли в</div>
-            <div style={{ fontSize: 34, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: '#F5E6A3', lineHeight: 1.15 }}>{menu.restaurantName}</div>
-            <div style={{ fontSize: 15, color: '#D4AF37', margin: '12px 0' }}>♡</div>
-            <div style={{ fontSize: 12, fontWeight: 500, letterSpacing: '0.22em', textTransform: 'uppercase', color: '#D4AF37' }}>Обедно меню</div>
+
+            <div className="hero-copy">
+              <div className="hero-kicker">Добре дошли в</div>
+              <div className="hero-title">{menu.restaurantName}</div>
+              <div className="hero-ornament">
+                <span className="hero-heart">♡</span>
+              </div>
+              <div className="hero-subtitle">Обедно меню</div>
+            </div>
           </div>
 
           {/* Sections */}
