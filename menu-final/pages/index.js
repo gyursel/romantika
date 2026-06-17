@@ -239,13 +239,13 @@ export default function Home() {
           {/* Header */}
           <div style={{
             background: menu.heroImage
-              ? `linear-gradient(rgba(15,12,8,${dark?'0.75':'0.6'}), rgba(15,12,8,${dark?'0.88':'0.78'})), url(${menu.heroImage}) center/cover no-repeat`
+              ? `linear-gradient(rgba(10,6,2,0.52), rgba(10,6,2,0.7)), url(${menu.heroImage}) center/cover no-repeat`
               : dark ? 'linear-gradient(160deg,#100d08 0%,#1e1508 100%)' : 'linear-gradient(160deg,#1a1208 0%,#2d1e08 100%)',
             color:'#f0e0b0',
-            padding:'3.5rem 1.5rem 2.75rem',
+            padding:'3rem 1.5rem 2.5rem',
             textAlign:'center',
             position:'relative',
-            minHeight: menu.heroImage ? 220 : 180,
+            minHeight: menu.heroImage ? 220 : 190,
             display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
             opacity: headerVis?1:0,
             transform: headerVis?'translateY(0)':'translateY(-14px)',
@@ -258,14 +258,10 @@ export default function Home() {
               АДМИН
             </button>
 
-            <div style={{ fontSize:10, letterSpacing:'0.3em', color:'rgba(200,160,60,0.45)', textTransform:'uppercase', marginBottom:12, fontFamily:"'Inter',sans-serif", fontWeight:300 }}>— Обедно меню —</div>
-            <div style={{ fontSize:28, fontWeight:600, letterSpacing:'0.06em', textTransform:'uppercase', lineHeight:1.2, color:'#f0e0b0' }}>{menu.restaurantName}</div>
-            <div style={{ fontSize:12, color:'rgba(200,160,60,0.4)', marginTop:10, letterSpacing:'0.1em', fontFamily:"'Inter',sans-serif", fontWeight:300 }}>{formatDate()}</div>
-            <div style={{ display:'flex', alignItems:'center', gap:10, marginTop:16 }}>
-              <div style={{ width:30, height:'0.5px', background:'rgba(200,160,60,0.3)' }} />
-              <div style={{ width:5, height:5, borderRadius:'50%', background:'rgba(200,160,60,0.4)' }} />
-              <div style={{ width:30, height:'0.5px', background:'rgba(200,160,60,0.3)' }} />
-            </div>
+            <div style={{ fontSize:9, letterSpacing:'0.32em', color:'rgba(200,160,60,0.6)', textTransform:'uppercase', marginBottom:10, fontFamily:"'Inter',sans-serif", fontWeight:300 }}>Добре дошли в</div>
+            <div style={{ fontSize:34, fontWeight:700, letterSpacing:'0.14em', textTransform:'uppercase', lineHeight:1.1, color:'#f0e0b0', textShadow:'0 2px 24px rgba(0,0,0,0.6)' }}>{menu.restaurantName}</div>
+            <div style={{ fontSize:20, color:'rgba(200,160,60,0.65)', margin:'10px 0 7px', lineHeight:1 }}>♥</div>
+            <div style={{ fontSize:9, letterSpacing:'0.3em', color:'rgba(200,160,60,0.5)', textTransform:'uppercase', fontFamily:"'Inter',sans-serif", fontWeight:300 }}>Обедно меню</div>
           </div>
 
           {/* Sections */}
