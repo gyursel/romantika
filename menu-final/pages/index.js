@@ -297,7 +297,7 @@ export default function Home() {
         .hero-kicker { font-size: 13px; margin-bottom: 2px; }
         .hero-title {
           font-family: Georgia, 'Times New Roman', serif;
-          font-size: clamp(34px, 9vw, 52px);
+          font-size: clamp(26px, 9vw, 52px);
           line-height: .98;
           font-weight: 500;
           text-transform: uppercase;
