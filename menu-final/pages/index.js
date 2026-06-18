@@ -8,7 +8,7 @@ const UPLOAD_PRESET = 'menu_upload';
 
 const defaultMenu = {
   restaurantName: 'Романтика',
-  phone: '+359 88 888 8888',
+  phone: '+359 88 888 8887',
   footerNote: 'Всички ястия се приготвят в момента на поръчката.\nАлергени при поискване.',
   heroImage: '',
   sections: [
