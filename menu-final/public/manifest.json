@@ -1,7 +1,7 @@
 {
-  "name": "Обедно меню",
-  "short_name": "Меню",
-  "description": "Дигитално обедно меню",
+  "name": "Романтика — Меню",
+  "short_name": "Романтика",
+  "description": "Дигитално обедно меню на ресторант Романтика",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1A1208",
