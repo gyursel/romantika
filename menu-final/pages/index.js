@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+pimport { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import { db } from '../lib/firebase';
 import { doc, getDoc, setDoc, collection, getDocs, addDoc } from 'firebase/firestore';
