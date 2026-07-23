@@ -426,7 +426,7 @@ export default function Home() {
   const [iosDevice, setIosDevice] = useState(false);
   const [todayViews, setTodayViews] = useState(null);
 
-  const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || '1234';
+  const ADMIN_PASS = process.env.NEXT_PUBLIC_ADMIN_PASS || '987';
   const badgeColors = getBadgeColors(dark);
 
   useEffect(() => {
